@@ -85,3 +85,16 @@ const cambiarEstado = (req, res) => {
   incidencia.estado = nuevoEstado;
   return res.status(200).json({ mensaje: "Estado actualizado correctamente", incidencia });
 };
+
+// 6. Eliminar Incidencia
+const eliminarIncidencia = (req, res) => {
+  const idParam = Number(req.params.id);
+  const index = incidencias.findIndex((inc) => inc.id === idParam);
+
+  if (index === -1) {
+    return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+  }
+
+  incidencias.splice(index, 1);
+  return res.status(200).json({ mensaje: "Incidencia eliminada correctamente" });
+};
