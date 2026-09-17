@@ -30,3 +30,8 @@ const registrarIncidencia = (req, res) => {
   incidencias.push(nuevaIncidencia);
   return res.status(201).json({ mensaje: "Incidencia registrada correctamente" });
 };
+
+// 3. Listar Incidencias
+const listarIncidencias = (req, res) => {
+  return res.status(200).json(incidencias);
+};
