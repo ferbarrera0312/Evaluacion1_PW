@@ -85,3 +85,33 @@ const cambiarEstado = (req, res) => {
   incidencia.estado = nuevoEstado;
   return res.status(200).json({ mensaje: "Estado actualizado correctamente", incidencia });
 };
+
+// 6. Eliminar Incidencia
+const eliminarIncidencia = (req, res) => {
+  const idParam = Number(req.params.id);
+  const index = incidencias.findIndex((inc) => inc.id === idParam);
+
+  if (index === -1) {
+    return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+  }
+
+  incidencias.splice(index, 1);
+  return res.status(200).json({ mensaje: "Incidencia eliminada correctamente" });
+};
+
+// 7. Endpoint de Estadísticas (Sin variables manuales)
+const obtenerEstadisticas = (req, res) => {
+  const totalIncidencias = incidencias.length;
+  const pendientes = incidencias.filter((inc) => normalizarTexto(inc.estado) === 'pendiente').length;
+  const enProceso = incidencias.filter((inc) => normalizarTexto(inc.estado) === 'en proceso').length;
+  const resueltas = incidencias.filter((inc) => normalizarTexto(inc.estado) === 'resuelta').length;
+  const canceladas = incidencias.filter((inc) => normalizarTexto(inc.estado) === 'cancelada').length;
+
+  return res.status(200).json({
+    totalIncidencias,
+    pendientes,
+    enProceso,
+    resueltas,
+    canceladas
+  });
+};

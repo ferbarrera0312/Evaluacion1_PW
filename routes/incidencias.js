@@ -8,5 +8,6 @@ router.get('/', controller.listarIncidencias);
 
 router.get('/:id', controller.buscarPorId);
 router.put('/:id/estado', controller.cambiarEstado);
+router.delete('/:id', controller.eliminarIncidencia);
 
 module.exports = router;
