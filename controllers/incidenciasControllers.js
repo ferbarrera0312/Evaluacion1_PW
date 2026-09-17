@@ -35,3 +35,15 @@ const registrarIncidencia = (req, res) => {
 const listarIncidencias = (req, res) => {
   return res.status(200).json(incidencias);
 };
+
+// 4. Buscar Incidencia por ID
+const buscarPorId = (req, res) => {
+  const idParam = Number(req.params.id);
+  const incidencia = incidencias.find((inc) => inc.id === idParam);
+
+  if (!incidencia) {
+    return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+  }
+
+  return res.status(200).json(incidencia);
+};

@@ -6,4 +6,5 @@ const controller = require('../controllers/incidenciasController');
 router.post('/', controller.registrarIncidencia);
 router.get('/', controller.listarIncidencias);
 
+router.get('/:id', controller.buscarPorId);
 module.exports = router;
