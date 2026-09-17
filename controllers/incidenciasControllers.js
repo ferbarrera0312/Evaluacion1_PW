@@ -99,7 +99,7 @@ const eliminarIncidencia = (req, res) => {
   return res.status(200).json({ mensaje: "Incidencia eliminada correctamente" });
 };
 
-// 7. Endpoint de Estadísticas (Sin variables manuales)
+// 7. Endpoint de Estadisticas (Sin variables manuales)
 const obtenerEstadisticas = (req, res) => {
   const totalIncidencias = incidencias.length;
   const pendientes = incidencias.filter((inc) => normalizarTexto(inc.estado) === 'pendiente').length;
@@ -114,4 +114,31 @@ const obtenerEstadisticas = (req, res) => {
     resueltas,
     canceladas
   });
+};
+
+// 8. Clasificacion Automatica
+const obtenerClasificacionIncidencia = (req, res) => {
+  const idParam = Number(req.params.id);
+  const incidencia = incidencias.find((inc) => inc.id === idParam);
+
+  if (!incidencia) {
+    return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+  }
+
+  const clasificacion = obtenerClasificacion(incidencia.prioridad);
+
+  return res.status(200).json({
+    id: incidencia.id,
+    clasificacion
+  });
+};
+
+module.exports = {
+  registrarIncidencia,
+  listarIncidencias,
+  buscarPorId,
+  cambiarEstado,
+  eliminarIncidencia,
+  obtenerEstadisticas,
+  obtenerClasificacionIncidencia
 };
