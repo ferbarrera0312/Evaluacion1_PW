@@ -5,6 +5,7 @@ const controller = require('../controllers/incidenciasController');
 // Rutas estáticas antes de las dinámicas (:id)
 router.post('/', controller.registrarIncidencia);
 router.get('/', controller.listarIncidencias);
+router.get('/estadisticas', controller.obtenerEstadisticas);
 
 router.get('/:id', controller.buscarPorId);
 router.put('/:id/estado', controller.cambiarEstado);
