@@ -4,7 +4,7 @@ const { incidencias, nextId, normalizarTexto, obtenerClasificacion } = require('
 const registrarIncidencia = (req, res) => {
   const { empleado, area, descripcion, prioridad } = req.body;
 
-  // Validar campos obligatorios y cadenas vacías con trim()
+  // Validar campos obligatorios y cadenas vacias con trim()
   if (!empleado || !area || !descripcion || !prioridad ||
       !empleado.trim() || !area.trim() || !descripcion.trim() || !prioridad.trim()) {
     return res.status(400).json({ mensaje: "Todos los campos son obligatorios" });
@@ -12,7 +12,7 @@ const registrarIncidencia = (req, res) => {
 
   const prioridadNorm = normalizarTexto(prioridad);
   if (prioridadNorm !== 'alta' && prioridadNorm !== 'media' && prioridadNorm !== 'baja') {
-    return res.status(400).json({ mensaje: "Prioridad no válida. Debe ser Alta, Media o Baja" });
+    return res.status(400).json({ mensaje: "Prioridad no valida. Debe ser Alta, Media o Baja" });
   }
 
   // Formato capitalizado para guardar
@@ -46,4 +46,42 @@ const buscarPorId = (req, res) => {
   }
 
   return res.status(200).json(incidencia);
+};
+
+// 5. Cambiar Estado de Incidencia (Obligatorio uso de switch)
+const cambiarEstado = (req, res) => {
+  const idParam = Number(req.params.id);
+  const { estado } = req.body;
+
+  if (!estado || !estado.trim()) {
+    return res.status(400).json({ mensaje: "El estado es obligatorio" });
+  }
+
+  const incidencia = incidencias.find((inc) => inc.id === idParam);
+  if (!incidencia) {
+    return res.status(404).json({ mensaje: "Incidencia no encontrada" });
+  }
+
+  const estadoNorm = normalizarTexto(estado);
+  let nuevoEstado = "";
+
+  switch (estadoNorm) {
+    case 'pendiente':
+      nuevoEstado = 'Pendiente';
+      break;
+    case 'en proceso':
+      nuevoEstado = 'En Proceso';
+      break;
+    case 'resuelta':
+      nuevoEstado = 'Resuelta';
+      break;
+    case 'cancelada':
+      nuevoEstado = 'Cancelada';
+      break;
+    default:
+      return res.status(400).json({ mensaje: "Estado no valido" });
+  }
+
+  incidencia.estado = nuevoEstado;
+  return res.status(200).json({ mensaje: "Estado actualizado correctamente", incidencia });
 };
