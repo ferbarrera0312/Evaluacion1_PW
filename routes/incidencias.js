@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/incidenciasController');
+const controller = require('../controllers/incidenciasControllers');
 
 // Rutas estáticas antes de las dinámicas (:id)
 router.post('/', controller.registrarIncidencia);
